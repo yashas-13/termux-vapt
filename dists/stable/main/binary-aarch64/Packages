@@ -9,8 +9,8 @@ Description: VAPT orchestration for Termux
  Includes authorization gate, HTML/Markdown reports, and findings deduplication.
  Works with nmap, ffuf, sqlmap; handles nuclei SIGSYS via python fallback.
 Filename: pool/main/t/termux-vapt/termux-vapt_0.1.0_all.deb
-Size: 14452
-MD5sum: 2cada5e00900d4b9af86366f78edb413
-SHA1: 88c8b8ec274151bbaf3896dbeed15a3def4d1448
-SHA256: 49046e4cfdcbd9806409e551735e6416a7536f4497fd61f084470497da60deea
+Size: 14160
+MD5sum: 5536782cc01fb069b5822d5958d416ef
+SHA1: 8ddb73b6ac6ede6704a3f3376c4c0358f09ae589
+SHA256: 53728bbc6cbba704c192dafe54e4a1dd9e15ab3d7cbe8fd29566ddcbd19dafe6
 
