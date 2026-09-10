@@ -15,7 +15,7 @@ for d in "$SITE" "$RMDEP"; do
   cp -a src/termux_vapt/__init__.py src/termux_vapt/auth.py \
      src/termux_vapt/scan.py src/termux_vapt/vuln.py src/termux_vapt/report.py \
      src/termux_vapt/cli.py \
-     src/termux_vapt/templates/ "$d/"
+     src/termux_vapt/templates/ src/termux_vapt/exploits/ "$d/"
 done
 
 echo "[2/4] Wrapper bin/termux-vapt..."

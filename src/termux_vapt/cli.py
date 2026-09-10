@@ -40,6 +40,15 @@ def cmd_check(args: argparse.Namespace) -> int:
     ok = all(t[x] for x in ("nmap", "ffuf", "sqlmap", "python3"))
     print("nuclei/httpx"
           " are optional — python fallback used if missing/SIGSYS.")
+    # Exploits check
+    try:
+        from .exploits import list_exploits
+        ex = list_exploits()
+        print(f"Exploits: {len(ex)} CVEs installed")
+        for m in ex[:5]:
+            print(f"  {m.get('id')}  {m.get('name')}")
+    except Exception as e:
+        print(f"Exploits: unavailable ({type(e).__name__})")
     return 0 if ok else 1
 
 
@@ -139,6 +148,33 @@ def cmd_full(args: argparse.Namespace) -> int:
     return cmd_scan(ns)
 
 
+
+def cmd_exploit(args: argparse.Namespace) -> int:
+    from .exploits import list_exploits, run_check, run_all
+    if args.list:
+        ex = list_exploits()
+        print(f"CVE exploits: {len(ex)} installed")
+        for m in ex:
+            print(f"  {m.get('id'):16} {m.get('severity', ''):9} {m.get('name')}")
+        return 0
+    outdir = Path(args.output)
+    _outdir(outdir)
+    eout = outdir / "phase4-exploit"
+    eout.mkdir(parents=True, exist_ok=True)
+    if args.cve:
+        f = run_check(args.cve, args.target, eout)
+        print(json.dumps(f or {"status": "Not Found"}, indent=2))
+        if f:
+            (eout / f"{args.cve}.jsonl").write_text(json.dumps(f, ensure_ascii=False) + "\n")
+        return 0
+    findings = run_all(args.target, eout)
+    print(f"Exploits ran: {len(findings)} findings")
+    for f in findings:
+        print(f"  {f.get('id', f.get('name',''))}: {f.get('status')}")
+    if findings:
+        (eout / "findings.jsonl").write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in findings))
+    return 0
+
 def cmd_report(args: argparse.Namespace) -> int:
     report.regenerate(Path(args.output), target=args.target or "output")
     return 0
@@ -151,6 +187,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     sp = sub.add_parser("check")
     sp.set_defaults(func=cmd_check)
+
+    se = sub.add_parser("exploit")
+    se.add_argument("target", help="target URL (https://host:port/)")
+    se.add_argument("--cve", help="specific CVE id (e.g. CVE-2021-44228)")
+    se.add_argument("--list", action="store_true", help="list installed CVE scripts")
+    se.add_argument("--output", type=Path, default=Path("output"))
+    se.set_defaults(func=cmd_exploit)
 
     sa = sub.add_parser("auth")
     sa.add_argument("--target")
