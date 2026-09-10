@@ -151,7 +151,7 @@ def cmd_full(args: argparse.Namespace) -> int:
 
 def cmd_exploit(args: argparse.Namespace) -> int:
     from .exploits import list_exploits, run_check, run_all
-    if args.list:
+    if getattr(args, 'list', False) or (args.target is None):
         ex = list_exploits()
         print(f"CVE exploits: {len(ex)} installed")
         for m in ex:
@@ -160,6 +160,8 @@ def cmd_exploit(args: argparse.Namespace) -> int:
     outdir = Path(args.output)
     _outdir(outdir)
     eout = outdir / "phase4-exploit"
+    if not args.target:
+        se.error('target required unless --list')
     eout.mkdir(parents=True, exist_ok=True)
     if args.cve:
         f = run_check(args.cve, args.target, eout)
@@ -189,7 +191,7 @@ def build_parser() -> argparse.ArgumentParser:
     sp.set_defaults(func=cmd_check)
 
     se = sub.add_parser("exploit")
-    se.add_argument("target", help="target URL (https://host:port/)")
+    se.add_argument("target", nargs="?", help="target URL (https://host:port/)")
     se.add_argument("--cve", help="specific CVE id (e.g. CVE-2021-44228)")
     se.add_argument("--list", action="store_true", help="list installed CVE scripts")
     se.add_argument("--output", type=Path, default=Path("output"))
