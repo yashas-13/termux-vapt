@@ -11,8 +11,8 @@ Description: VAPT orchestration for Termux
  Works with nmap, ffuf, sqlmap; handles nuclei SIGSYS via python fallback.
 Installed-Size: 
 Filename: pool/main/t/termux-vapt/termux-vapt_0.1.0_all.deb
-Size: 25244
-MD5sum: c677429ba9ccde22a2c78359e02600e1
-SHA1: ec0f7ea6afd862c294b479b2c43327b49bc6bd04
-SHA256: 062d77892c08971898c54417ee092a293504a1ad86ee3a14c9ac0e25e991be20
+Size: 27312
+MD5sum: 09678e883e0adf2d3a3be142661a4751
+SHA1: f451a5b4fc649847bdbd1af6b83b181cd4504583
+SHA256: b6fc28be989c91b0018081e2bff2337edf5adcb4431d4ed26d81c45c168e554c
 
