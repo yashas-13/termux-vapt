@@ -1,0 +1,92 @@
+.\" termux-vapt.1 — manpage
+.TH TERMUX-VAPT 1 "January 2026" "termux-vapt 0.1.0" "User Commands"
+.SH NAME
+termux\-vapt \- Termux Vulnerability Assessment & Penetration Testing CLI
+.SH SYNOPSIS
+.B termux\-vapt
+.I COMMAND
+.RI [ OPTIONS ]
+.SH DESCRIPTION
+.B termux\-vapt
+runs a 5-phase vulnerability assessment pipeline on authorized targets and produces
+HTML, Markdown, and JSON reports with PoC artifacts for every confirmed finding.
+
+Before scanning, confirm target scope, written authorization, rules of engagement,
+and a stop condition. The CLI refuses to run past Phase 1 without an auth file or
+interactive confirmation.
+
+.SH COMMANDS
+.TP
+.B check
+Report which tools (nmap, ffuf, sqlmap, nuclei, httpx) are installed and usable.
+.TP
+.BI "auth " \-f " FILE
+Write or validate an authorization file for subsequent scan runs.
+.TP
+.BI "scan " TARGET
+Run phases on TARGET. Use \-\-phase to run specific phases.
+.TP
+.BI "full " TARGET
+Run all 5 phases end-to-end.
+.TP
+.BI "vuln " TARGET
+Run Phase 3 (vulnerability assessment) only.
+.TP
+.BI "report " OUTDIR
+Regenerate report.html / report.md from existing findings.jsonl files.
+
+.SH OPTIONS
+.TP
+.BI "\-\-phase " N
+Phase number (1\-5). May be repeated.
+.TP
+.B "\-\-no-exploit"
+Skip Phase 4 (exploitation). Read-only assessment.
+.TP
+.B "\-\-fast"
+Skip nmap full scan. Quick phase2 with nuclei/fuzz only.
+.TP
+.BI "\-\-output " DIR
+Output directory (default: ./output).
+.TP
+.BI "\-\-auth " FILE
+Path to auth.json. Required before scan unless interactive confirmation is given.
+.TP
+.B "\-\-json"
+Output findings to stdout in JSONL.
+
+.SH OUTPUT
+Output is written to the \-\-output directory:
+.PP
+.nf
+output/
+├── phase1-recon/
+├── phase2-scan/
+├── phase3-vuln/
+├── phase4-exploit/
+├── report.html
+├── report.md
+├── exec-summary.md
+└── findings-merged.json
+.fi
+
+.SH AUTHORIZATION
+Do not run against any target without written authorization from the system owner.
+See docs/AUTHORIZATION.md for the full gate checklist.
+
+.SH SAFETY
+By default termux\-vapt runs read-only. Use \-\-no-exploit to skip Phase 4 entirely.
+sqlmap is invoked with \-\-batch (non-interactive) and limited \-\-level/\-\-risk.
+No destructive payloads, no DoS, no lateral movement.
+
+.SH SEE ALSO
+.BR nmap (1),
+.BR ffuf (1),
+.BR sqlmap (1),
+.BR adb (1)
+
+.SH AUTHOR
+termux\-vapt contributors
+
+.SH LICENSE
+MIT
