@@ -1,0 +1,22 @@
+{
+    "storage_credentials": [
+        {
+            "name": "__databricks_managed_storage_credential",
+            "comment": "Databricks managed storage credential (auto-created)",
+            "read_only": false,
+            "owner": "System user",
+            "id": "0affb70e-39a8-4bcb-8e17-1aa9843f29ea",
+            "metastore_id": "d6f0705d-6a90-4ee0-9581-53198b52313d",
+            "created_at": 1789076616751,
+            "created_by": "System user",
+            "updated_at": 1789076616751,
+            "updated_by": "System user",
+            "full_name": "__databricks_managed_storage_credential",
+            "securable_type": "STORAGE_CREDENTIAL",
+            "securable_kind": "STORAGE_CREDENTIAL_DB_AWS_IAM",
+            "isolation_mode": "ISOLATION_MODE_OPEN",
+            "accessible_in_current_workspace": true,
+            "etag": "CAESCAAAAaCNRrYv"
+        }
+    ]
+}

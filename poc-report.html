@@ -1,0 +1,140 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Databricks PoC - HackerOne</title>
+<style>
+*{box-sizing:border-box} body{font-family:Inter,system-ui,Arial,sans-serif;background:#0b0f14;color:#e6edf3;margin:0;padding:24px;line-height:1.6}
+h1{color:#58a6ff;border-bottom:1px solid #30363d;padding-bottom:12px}
+h2{color:#f0883e;margin-top:28px;border-left:4px solid #f0883e;padding-left:10px}
+h3{color:#7ee787}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin:14px 0}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:12px;font-weight:700}
+.crit{background:#da3633;color:#fff} .high{background:#f0883e;color:#000} .info{background:#8b949e;color:#fff}
+pre{background:#010409;border:1px solid #30363d;border-radius:6px;padding:12px;overflow:auto;font-size:12px;white-space:pre-wrap;word-break:break-all}
+code{color:#79c0ff}
+.meta{color:#8b949e;font-size:12px}
+a{color:#58a6ff}
+table{width:100%;border-collapse:collapse;margin:8px 0}
+th,td{border:1px solid #30363d;padding:8px 10px;text-align:left;font-size:13px}
+th{background:#21262d}
+.warn{background:#342a1a;border-color:#f0883e}
+</style></head><body>
+<h1>Databricks Bug Bounty — PoC Pack (Critical Hunt)</h1>
+<div class="meta">Target: dbc-20c3ac0f-c5f4.cloud.databricks.com (org 7474647923123844) • dbc-9a3f8ed1-7608.cloud.databricks.com (org 8789365059946363) • accounts.cloud.databricks.com<br>
+Tester: cyberjeet13@gmail.com • Date: 2026-09-10 • Scope: Databricks Product / Lakebase</div>
+
+<div class="card warn"><b>⚠️ IMPORTANT:</b> This pack documents <b>confirmed, reproducible</b> findings with full HTTP PoC. Severity per HackerOne program: CORS wildcard + CSP weak = <b>Info/Low</b>, S3 storage_root leak = <b>Medium</b> (CVSS 4.0+). <b>None is $10k Critical</b> — Critical requires unauth RCE, cross-tenant leak, or secret extraction, none reproduced (see last card). Submit honestly to avoid N/A.</div>
+
+<h2>1. Unity Catalog Storage Root Disclosure <span class="badge info">Medium • CVSS 4.3</span></h2>
+<div class="card">
+<h3>Steps to Reproduce (copy-paste)</h3>
+<pre>curl -s -H "Authorization: Bearer <REDACTED-PAT>" \
+  https://dbc-20c3ac0f-c5f4.cloud.databricks.com/api/2.1/unity-catalog/catalogs | jq .
+
+# observe catalogs[0].storage_root + storage_location
+# storage_root: s3://dbstorage-prod-0yrhy/uc/485c2e6d-8ca8-4cc0-8908-f30c4dff7620/d6f0705d-6a90-4ee0-9581-53198b52313d
+# also:
+curl -s -H "Authorization: Bearer <REDACTED-PAT>" \
+  https://dbc-20c3ac0f-c5f4.cloud.databricks.com/api/2.1/unity-catalog/storage-credentials | jq .
+curl -s -H "Authorization: Bearer <REDACTED-PAT>" \
+  https://dbc-20c3ac0f-c5f4.cloud.databricks.com/api/2.1/unity-catalog/external-locations | jq .</pre>
+<h3>Expected vs Actual</h3>
+<table><tr><th>Expected</th><th>Actual</th></tr>
+<tr><td>Storage backend hidden from workspace users</td><td>Any workspace user (CAN_USE) reads full S3 bucket + metastore_id d6f0705d-6a90-4ee0-9581-53198b52313d</td></tr></table>
+<h3>Evidence (screenshot this)</h3>
+<pre>{
+  "name": "workspace",
+  "owner": "cyberjeet13@gmail.com",
+  "storage_root": "s3://dbstorage-prod-0yrhy/uc/485c2e6d-8ca8-4cc0-8908-f30c4dff7620/d6f0705d-6a90-4ee0-9581-53198b52313d",
+  "storage_location": "s3://dbstorage-prod-0yrhy/uc/485c2e6d-8ca8-4cc0-8908-f30c4dff7620/d6f0705d-6a90-4ee0-9581-53198b52313d/__unitystorage/catalogs/ec7a39e8-4d08-4784-81a4-8e889f9f9d99",
+  "metastore_id": "d6f0705d-6a90-4ee0-9581-53198b52313d"
+}</pre>
+<p class="meta">Screenshot: terminal showing curl + json, highlight storage_root. Alternative: screenshot SQL `SELECT current_metastore()` returning aws:us-east-2:d6f0705d-6a90-4ee0-9581-53198b52313d.</p>
+<h3>Impact</h3>
+<p>S3 bucket name + metastore UUID enables targeted bucket brute-force / policy confusion. Needs IAM misconfig to exploit — Medium.</p>
+<h3>Remediation</h3>
+<p>Return storage_root only to metastore admins / hide from workspace consumers.</p>
+</div>
+
+<h2>2. CORS Wildcard on All Workspace APIs <span class="badge info">Info/High if chained</span></h2>
+<div class="card">
+<h3>Steps to Reproduce</h3>
+<pre>curl -i -H "Origin: https://evil.com" \
+  -H "Authorization: Bearer invalid" \
+  https://dbc-20c3ac0f-c5f4.cloud.databricks.com/api/2.1/unity-catalog/catalogs
+
+# Response headers include:
+# access-control-allow-origin: *
+# access-control-allow-headers: Authorization, ...
+
+# Preflight:
+curl -i -X OPTIONS -H "Origin: https://evil.com" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: authorization,content-type" \
+  https://dbc-20c3ac0f-c5f4.cloud.databricks.com/api/2.0/clusters/list
+
+# Repeat on second target:
+curl -i -H "Origin: https://evil.com" \
+  https://dbc-9a3f8ed1-7608.cloud.databricks.com/api/2.0/clusters/list</pre>
+<h3>Evidence (screenshot this)</h3>
+<pre>HTTP/2 401
+access-control-allow-origin: *
+access-control-allow-headers: Authorization, X-Databricks-Azure-Workspace-Resource-Id, X-Databricks-Org-Id, Content-Type
+vary: Accept-Encoding</pre>
+<p class="meta">Screenshot: curl -i output with ACAO: * highlighted. Also screenshot DevTools Network tab showing same header on login.html.</p>
+<h3>Impact</h3>
+<p>Any site can read unauth error bodies cross-origin. With stolen PAT (XSS chain) can exfiltrate data. Without credentials not $10k. Program caps XSS ATO at High.</p>
+</div>
+
+<h2>3. Weak CSP: default-src * + unsafe-eval, frame-ancestors * <span class="badge info">Info</span></h2>
+<div class="card">
+<h3>Steps to Reproduce</h3>
+<pre>curl -i https://dbc-20c3ac0f-c5f4.cloud.databricks.com/login.html?o=7474647923123844 | grep -i content-security
+
+# Returns:
+# content-security-policy: default-src *; ... script-src 'self' 'unsafe-eval' 'unsafe-hashes' ...; frame-ancestors *</pre>
+<h3>Evidence (screenshot this)</h3>
+<pre>content-security-policy: default-src *; font-src * data:; frame-src * blob:; img-src * blob: data:; ... script-src 'self' 'unsafe-eval' ...; frame-ancestors *</pre>
+<p class="meta">Screenshot: response headers in DevTools or curl output.</p>
+</div>
+
+<h2>4. Workspace Token Scoped to Single Host (Positive Control)</h2>
+<div class="card">
+<h3>Steps to Reproduce</h3>
+<pre># Correct host (200 OK):
+curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer <REDACTED-PAT>" \
+  https://dbc-20c3ac0f-c5f4.cloud.databricks.com/api/2.1/unity-catalog/catalogs
+# → 200
+
+# Wrong host (403):
+curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer <REDACTED-PAT>" \
+  https://dbc-9a3f8ed1-7608.cloud.databricks.com/api/2.1/unity-catalog/catalogs
+# → 403 Invalid access token</pre>
+<h3>Evidence (screenshot this)</h3>
+<pre>200 https://dbc-20c3ac0f-c5f4.../catalogs
+403 {"error_code":403,"message":"Invalid access token."} https://dbc-9a3f8ed1-7608...</pre>
+<p class="meta">Shows isolation works — prevents false cross-tenant claim.</p>
+</div>
+
+<h2>5. Negative Results — What Was Tested and Why Not $10k</h2>
+<div class="card warn">
+<p><b>Tested, not vulnerable (do not submit as Critical):</b></p>
+<table>
+<tr><th>Path</th><th>Test</th><th>Result</th></tr>
+<tr><td>X-Databricks-Org-Id spoof</td><td>GET /catalogs with Org 8789365059946363 / 0000...</td><td>Returns same 3 catalogs — header ignored, not isolation bypass</td></tr>
+<tr><td>OIDC /oidc/v1/token SSRF</td><td>client_id=http://169.254.169.254</td><td>invalid_client, no SSRF</td></tr>
+<tr><td>driver-proxy/o/{ws}/0/0</td><td>Brute ws IDs 747..., 111..., 999...</td><td>All 303 → login, no IDOR</td></tr>
+<tr><td>Cluster RCE</td><td>POST /clusters/create with init_scripts dbfs:/init.sh</td><td>400: no worker environment (Free Edition, by design root inside cluster not cross-tenant)</td></tr>
+<tr><td>Lakebase escape</td><td>GET /postgres/extension/list, /lakebase/*, /oltp/*</td><td>404 — Lakebase not provisioned in us-east-2 for this workspace</td></tr>
+<tr><td>secrets/scopes/list</td><td>List scopes + list secrets</td><td>Scope pentest-scope-1234 empty, no secret leak</td></tr>
+</table>
+<p class="meta">Screenshot each curl showing 401/404/303 to prove tester stopped at boundary per RoE.</p>
+</div>
+
+<div class="card" style="text-align:center">
+<p><b>Screenshot Instructions for HackerOne:</b></p>
+<p>1) Open terminal, run each curl above, screenshot full request + response (include URL bar if browser).<br>
+2) Screenshot this HTML (Ctrl+Shift+I → full page) as cover.<br>
+3) Attach as PoC files: 01-catalogs.json, 05-cors-headers.txt, 06-login-csp.txt already saved in <code>/bhdb2/poc/</code>.<br>
+4) In report, paste the curl blocks verbatim — reviewer must copy-paste to reproduce.</p>
+<p><a href="file:///data/data/com.termux/files/home/bhdb2/poc/01-catalogs.json">01-catalogs.json</a> • <a href="file:///data/data/com.termux/files/home/bhdb2/poc/04-scim-me.json">04-scim-me.json</a></p>
+</div>
+</body></html>

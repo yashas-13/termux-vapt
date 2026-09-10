@@ -1,0 +1,97 @@
+{
+    "catalogs": [
+        {
+            "name": "workspace",
+            "owner": "cyberjeet13@gmail.com",
+            "storage_root": "s3://dbstorage-prod-0yrhy/uc/485c2e6d-8ca8-4cc0-8908-f30c4dff7620/d6f0705d-6a90-4ee0-9581-53198b52313d",
+            "enable_auto_maintenance": "INHERIT",
+            "enable_predictive_optimization": "INHERIT",
+            "catalog_type": "MANAGED_CATALOG",
+            "metastore_id": "d6f0705d-6a90-4ee0-9581-53198b52313d",
+            "created_at": 1789076616928,
+            "created_by": "cyberjeet13@gmail.com",
+            "updated_at": 1789078077647,
+            "updated_by": "cyberjeet13@gmail.com",
+            "storage_location": "s3://dbstorage-prod-0yrhy/uc/485c2e6d-8ca8-4cc0-8908-f30c4dff7620/d6f0705d-6a90-4ee0-9581-53198b52313d/__unitystorage/catalogs/ec7a39e8-4d08-4784-81a4-8e889f9f9d99",
+            "isolation_mode": "ISOLATED",
+            "accessible_in_current_workspace": true,
+            "effective_auto_maintenance_flag": {
+                "value": "ENABLE",
+                "inherited_from_type": "METASTORE",
+                "inherited_from_name": "metastore_aws_us_east_2"
+            },
+            "effective_predictive_optimization_flag": {
+                "value": "ENABLE",
+                "inherited_from_type": "METASTORE",
+                "inherited_from_name": "metastore_aws_us_east_2"
+            },
+            "browse_only": false,
+            "id": "ec7a39e8-4d08-4784-81a4-8e889f9f9d99",
+            "full_name": "workspace",
+            "securable_type": "CATALOG",
+            "securable_kind": "CATALOG_DB_STORAGE",
+            "resource_name": "/metastores/d6f0705d-6a90-4ee0-9581-53198b52313d/catalogs/ec7a39e8-4d08-4784-81a4-8e889f9f9d99",
+            "metastore_version": -1,
+            "cache_version_info": {
+                "metastore_version": -1
+            },
+            "etag": "CAESCAAAAaCNXQDP"
+        },
+        {
+            "name": "samples",
+            "owner": "System user",
+            "comment": "These sample datasets are made available by third party data providers as well as open data sources. You can learn more about each data set by clicking on each one.\n\nTo discover more instantly available, free data sets across a wide range of industry use cases, visit [Databricks Marketplace](/marketplace).\n\nPlease note that the third party data sets represent a reduced portion of the available data attributes, volume, and data types available from providers, and are intended for educational rather than production purposes.",
+            "catalog_type": "SYSTEM_CATALOG",
+            "metastore_id": "d6f0705d-6a90-4ee0-9581-53198b52313d",
+            "created_at": 1789076612498,
+            "created_by": "System user",
+            "updated_at": 1789078234782,
+            "updated_by": "System user",
+            "isolation_mode": "OPEN",
+            "accessible_in_current_workspace": true,
+            "browse_only": false,
+            "provisioning_info": {
+                "state": "ACTIVE"
+            },
+            "id": "47fffe77-99d5-445f-a1a7-0d51785ddaf0",
+            "full_name": "samples",
+            "securable_type": "CATALOG",
+            "securable_kind": "CATALOG_SYSTEM",
+            "resource_name": "/metastores/d6f0705d-6a90-4ee0-9581-53198b52313d/catalogs/47fffe77-99d5-445f-a1a7-0d51785ddaf0",
+            "delta_sharing_valid_through_timestamp": 1789078294735,
+            "metastore_version": -1,
+            "cache_version_info": {
+                "metastore_version": -1
+            },
+            "etag": "CAESCAAAAaCNX2ae"
+        },
+        {
+            "name": "system",
+            "owner": "System user",
+            "comment": "System catalog (auto-created)",
+            "catalog_type": "SYSTEM_CATALOG",
+            "metastore_id": "d6f0705d-6a90-4ee0-9581-53198b52313d",
+            "created_at": 1789076611698,
+            "created_by": "System user",
+            "updated_at": 1789077917209,
+            "updated_by": "System user",
+            "isolation_mode": "OPEN",
+            "accessible_in_current_workspace": true,
+            "browse_only": false,
+            "provisioning_info": {
+                "state": "ACTIVE"
+            },
+            "id": "10d43284-d615-46db-8545-677667a43356",
+            "full_name": "system",
+            "securable_type": "CATALOG",
+            "securable_kind": "CATALOG_SYSTEM",
+            "resource_name": "/metastores/d6f0705d-6a90-4ee0-9581-53198b52313d/catalogs/10d43284-d615-46db-8545-677667a43356",
+            "delta_sharing_valid_through_timestamp": 1789077977163,
+            "metastore_version": -1,
+            "cache_version_info": {
+                "metastore_version": -1
+            },
+            "etag": "CAESCAAAAaCNWo4Z"
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+HTTP/2 401 
+access-control-allow-headers: Authorization, X-Databricks-Azure-Workspace-Resource-Id, X-Databricks-Org-Id, Content-Type, X-Databricks-Attribution-Tags
+access-control-allow-origin: *
+cache-control: no-cache, no-store, must-revalidate
+expires: 0
+pragma: no-cache
+x-databricks-org-id: 8789365059946363
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+x-content-type-options: nosniff
+x-request-id: 9be4f7c1-62f1-4474-b3a4-25a8b7a9b049
+content-type: application/json; charset=utf-8
+content-length: 144
+x-databricks-reason-phrase: Credential was not sent or was of an unsupported type for this API.
+www-authenticate: Bearer realm="DatabricksRealm"
+vary: Accept-Encoding
+date: Thu, 10 Sep 2026 22:21:46 GMT
+server: databricks
+alt-svc: clear
+server-timing: request_id;dur=0;desc="9be4f7c1-62f1-4474-b3a4-25a8b7a9b049", client_protocol;dur=0;desc="HTTP/2"
+

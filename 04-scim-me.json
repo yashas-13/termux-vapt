@@ -1,0 +1,38 @@
+{
+    "emails": [
+        {
+            "type": "work",
+            "value": "cyberjeet13@gmail.com",
+            "primary": true
+        }
+    ],
+    "entitlements": [
+        {
+            "value": "allow-cluster-create"
+        },
+        {
+            "value": "allow-instance-pool-create"
+        }
+    ],
+    "schemas": [
+        "urn:ietf:params:scim:schemas:core:2.0:User",
+        "urn:ietf:params:scim:schemas:extension:workspace:2.0:User"
+    ],
+    "active": true,
+    "groups": [
+        {
+            "display": "admins",
+            "type": "direct",
+            "value": "81234937746504",
+            "$ref": "Groups/81234937746504"
+        },
+        {
+            "display": "users",
+            "type": "direct",
+            "value": "86788435394028",
+            "$ref": "Groups/86788435394028"
+        }
+    ],
+    "id": "79026394870971",
+    "userName": "cyberjeet13@gmail.com"
+}

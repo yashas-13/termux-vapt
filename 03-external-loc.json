@@ -1,0 +1,31 @@
+{
+    "external_locations": [
+        {
+            "name": "__databricks_managed_storage_location",
+            "url": "s3://dbstorage-prod-0yrhy/uc/485c2e6d-8ca8-4cc0-8908-f30c4dff7620/d6f0705d-6a90-4ee0-9581-53198b52313d",
+            "credential_name": "__databricks_managed_storage_credential",
+            "read_only": false,
+            "comment": "Databricks managed storage location (auto-created)",
+            "owner": "System user",
+            "encryption_details": {
+                "dmk_encryption_details": {}
+            },
+            "metastore_id": "d6f0705d-6a90-4ee0-9581-53198b52313d",
+            "credential_id": "0affb70e-39a8-4bcb-8e17-1aa9843f29ea",
+            "created_at": 1789076616790,
+            "created_by": "System user",
+            "updated_at": 1789076616790,
+            "updated_by": "System user",
+            "full_name": "__databricks_managed_storage_location",
+            "securable_type": "EXTERNAL_LOCATION",
+            "securable_kind": "EXTERNAL_LOCATION_DB_STORAGE",
+            "id": "b2f2df50-80b6-42c2-bd83-3b4129e071fc",
+            "isolation_mode": "ISOLATION_MODE_OPEN",
+            "accessible_in_current_workspace": true,
+            "fallback": false,
+            "resource_name": "/metastores/d6f0705d-6a90-4ee0-9581-53198b52313d/external-locations/b2f2df50-80b6-42c2-bd83-3b4129e071fc",
+            "etag": "CAESCAAAAaCNRrZW",
+            "effective_enable_file_events": false
+        }
+    ]
+}
