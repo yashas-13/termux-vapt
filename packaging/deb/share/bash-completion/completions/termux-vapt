@@ -1,0 +1,18 @@
+# termux-vapt bash completion
+_termux_vapt_completions() {
+  local cur prev cmds
+  cmds="check auth scan vuln report full"
+  COMPREPLY=()
+  cur=${COMP_WORDS[COMP_CWORD]}
+  prev=${COMP_WORDS[COMP_CWORD-1]}
+  if [[ $COMP_CWORD -eq 1 ]]; then
+    COMPREPLY=( $(compgen -W "$cmds" -- "$cur") )
+    return
+  fi
+  case ${COMP_WORDS[1]} in
+    scan|full) COMPREPLY=( $(compgen -W "--phase --no-exploit --fast --output --force" -- "$cur") );;
+    auth) COMPREPLY=( $(compgen -W "--target --scope --roe --safe-word --auth-file --output" -- "$cur") );;
+    report) COMPREPLY=( $(compgen -W "--target" -- "$cur") );;
+  esac
+}
+complete -F _termux_vapt_completions termux-vapt

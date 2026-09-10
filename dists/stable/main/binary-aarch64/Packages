@@ -4,13 +4,15 @@ Architecture: all
 Maintainer: termux-vapt <termux-vapt@example.com>
 Depends: python (>= 3.10), nmap
 Recommends: thc-hydra, radare2, jadx, apktool, android-tools-adb
+Suggests: 
 Description: VAPT orchestration for Termux
  Runs a 5-phase vulnerability assessment pipeline with detailed PoC capture.
  Includes authorization gate, HTML/Markdown reports, and findings deduplication.
  Works with nmap, ffuf, sqlmap; handles nuclei SIGSYS via python fallback.
+Installed-Size: 
 Filename: pool/main/t/termux-vapt/termux-vapt_0.1.0_all.deb
-Size: 14160
-MD5sum: 5536782cc01fb069b5822d5958d416ef
-SHA1: 8ddb73b6ac6ede6704a3f3376c4c0358f09ae589
-SHA256: 53728bbc6cbba704c192dafe54e4a1dd9e15ab3d7cbe8fd29566ddcbd19dafe6
+Size: 14420
+MD5sum: 7f898cf6cff81316ae358be7865c5df3
+SHA1: a6c92ac65b5d61c2ca4d8847375e95ea9b59f9ae
+SHA256: 78fd96fb692adf5e1aab87cf2ebd8e299355633406340c442b69c4dafa92f979
 
