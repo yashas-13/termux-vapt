@@ -1,8 +1,9 @@
-#!/system/bin/sh
+#!/data/data/com.termux/files/usr/bin/bash
 set -e
-if [ -z "${PREFIX:-}" ]; then
-  PREFIX=/data/data/com.termux/files/usr
-fi
-# No-op: ensure binary is executable and record install
-echo "termux-vapt installed."
-echo "Add auth gate before first scan: termux-vapt auth --help"
+PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
+chmod 755 "$PREFIX/bin/termux-vapt" 2>/dev/null || true
+
+# Install python deps not in Termux main repo
+pip install --quiet --upgrade requests bs4 sqlmap 2>/dev/null || true
+
+echo "termux-vapt installed — run: termux-vapt --help"

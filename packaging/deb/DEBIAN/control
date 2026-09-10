@@ -2,13 +2,12 @@ Package: termux-vapt
 Version: 0.1.0
 Architecture: all
 Maintainer: termux-vapt <termux-vapt@example.com>
-Homepage: https://github.com/USER/termux-vapt
+Homepage: https://github.com/yashas-13/termux-vapt
 Section: utils
 Priority: optional
-Depends: python3 (>= 3.10), python3-pip, python3-requests, python3-bs4 | python3-beautifulsoup4, nmap, ffuf, sqlmap
-Recommends: nikto, thc-hydra, radare2, jadx, apktool, android-tools-adb
+Depends: python (>= 3.10), nmap
+Recommends: thc-hydra, radare2, jadx, apktool, android-tools-adb
 Description: VAPT orchestration for Termux
  Runs a 5-phase vulnerability assessment pipeline with detailed PoC capture.
  Includes authorization gate, HTML/Markdown reports, and findings deduplication.
  Works with nmap, ffuf, sqlmap; handles nuclei SIGSYS via python fallback.
-
