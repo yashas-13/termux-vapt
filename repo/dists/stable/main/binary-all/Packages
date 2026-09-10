@@ -1,0 +1,18 @@
+termux-vapt
+0.1.0
+all
+termux-vapt <termux-vapt@example.com>
+python3 (>= 3.10), python3-pip, python3-requests, python3-bs4 | python3-beautifulsoup4, nmap, ffuf, sqlmap
+nikto, thc-hydra, radare2, jadx, apktool, android-tools-adb
+
+VAPT orchestration for Termux
+ Runs a 5-phase vulnerability assessment pipeline with detailed PoC capture.
+ Includes authorization gate, HTML/Markdown reports, and findings deduplication.
+ Works with nmap, ffuf, sqlmap; handles nuclei SIGSYS via python fallback.
+
+Filename: pool/main/t/termux-vapt/termux-vapt_0.1.0_all.deb
+Size: 14160
+MD5sum: 89fe3b25b3530c2024972c4baac869a6
+SHA1: fbb76c6785a80ef07e3d97a836afcfe7b785bfd5
+SHA256: d4d6de8923c97facf2216f133bbc06cb35f168ad0bd736bf3c14f56229383faa
+

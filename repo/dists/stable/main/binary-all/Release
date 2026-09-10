@@ -5,4 +5,4 @@ Codename: stable
 Architectures: all aarch64 arm
 Components: main
 Description: termux-vapt — VAPT pipeline for Termux
-Date: Thu, 10 Sep 2026 06:07:42 +0000
+Date: Thu, 10 Sep 2026 06:13:49 +0000
