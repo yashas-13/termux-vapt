@@ -1,4 +1,4 @@
-#!/system/bin/sh
-set -e
-# No data removal on upgrade/downgrade.
-exit 0
+#!/data/data/com.termux/files/usr/bin/bash
+PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
+rm -f "$PREFIX/bin/termux-vapt" 2>/dev/null || true
+rm -rf "$PREFIX/share/termux-vapt" 2>/dev/null || true

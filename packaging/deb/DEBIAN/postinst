@@ -2,8 +2,5 @@
 set -e
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
 chmod 755 "$PREFIX/bin/termux-vapt" 2>/dev/null || true
-
-# Install python deps not in Termux main repo
 pip install --quiet --upgrade requests bs4 sqlmap 2>/dev/null || true
-
 echo "termux-vapt installed — run: termux-vapt --help"
