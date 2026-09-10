@@ -11,3 +11,4 @@ Description: VAPT orchestration for Termux
  Runs a 5-phase vulnerability assessment pipeline with detailed PoC capture.
  Includes authorization gate, HTML/Markdown reports, and findings deduplication.
  Works with nmap, ffuf, sqlmap; handles nuclei SIGSYS via python fallback.
+
