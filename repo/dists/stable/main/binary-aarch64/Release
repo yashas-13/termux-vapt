@@ -1,0 +1,8 @@
+Origin: termux-vapt
+Label: termux-vapt
+Suite: stable
+Codename: stable
+Architectures: aarch64
+Components: main
+Description: termux-vapt — VAPT pipeline for Termux (aarch64 mirror)
+Date: Thu, 10 Sep 2026 06:59:01 +0000
