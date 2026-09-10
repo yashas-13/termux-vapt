@@ -1,17 +1,4 @@
 #!/data/data/com.termux/files/usr/bin/python3
-"""termux-vapt wrapper — delegates to termux_vapt.cli."""
-
-import sys
-from pathlib import Path
-
-ROOT = Path(__file__).resolve().parent
-if (ROOT / "termux_vapt").is_dir():
-    # Loose checkout: ~/termux-vapt/src wrapper
-    sys.path.insert(0, str(ROOT))
-elif (Path("/data/data/com.termux/files/usr/share/termux-vapt")).is_dir():
-    sys.path.insert(0, "/data/data/com.termux/files/usr/share/termux-vapt")
-
 from termux_vapt.cli import main
-
 if __name__ == "__main__":
     raise SystemExit(main())
