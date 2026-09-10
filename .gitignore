@@ -1,0 +1,19 @@
+# Bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Build artifacts
+packaging/deb/*.deb
+packaging/deb/data/
+repo/pool/
+repo/dists/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
